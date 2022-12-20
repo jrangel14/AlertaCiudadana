@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, NavController } from '@ionic/angular';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -49,7 +50,15 @@ export class LoginPage implements OnInit {
     slidesPerView: 3.5,
   };
 
-  constructor() {}
+  loginUser = {
+    email: 'prueba1@prueba.com',
+    password: '123456',
+  };
+
+  constructor(
+    private usuarioService: UsuarioService,
+    private navCtrl: NavController
+  ) {}
 
   ngOnInit() {}
 
@@ -58,7 +67,17 @@ export class LoginPage implements OnInit {
   }
 
   login(fLogin: NgForm) {
+    //validamos el login
+    if (fLogin.invalid) {
+      return;
+    }
+    //enviamos data a la api de Usuario
+    this.usuarioService.login(this.loginUser.email, this.loginUser.password);
+    //
+    this.navCtrl.navigateRoot('/main/tabs/tab1', { animated: true });
+    //
     console.log(fLogin.valid);
+    console.log(this.loginUser);
   }
 
   registro(fRegistro: NgForm) {
@@ -68,5 +87,17 @@ export class LoginPage implements OnInit {
   seleccionarAvatar(avatar: any) {
     this.avatars.forEach((av) => (av.seleccionado = false));
     avatar.seleccionado = true;
+  }
+
+  mostrarRegistro() {
+    this.slides.lockSwipes(false);
+    this.slides.slideTo(0);
+    this.slides.lockSwipes(true);
+  }
+
+  mostrarLogin() {
+    this.slides.lockSwipes(false);
+    this.slides.slideTo(1);
+    this.slides.lockSwipes(true);
   }
 }
