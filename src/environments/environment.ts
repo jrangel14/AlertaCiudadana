@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  url:  'http://192.168.0.2:3000',
+  //url: 'https://alerta-ciudadana-api.onrender.com',
+  url: 'http://localhost:3000',
 };
 
 /*

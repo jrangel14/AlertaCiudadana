@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { IonSlides, NavController } from '@ionic/angular';
+import { UiServiceService } from 'src/app/services/ui-service.service';
 import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
@@ -51,13 +52,14 @@ export class LoginPage implements OnInit {
   };
 
   loginUser = {
-    email: 'prueba1@prueba.com',
-    password: '123456',
+    email: 'anthyjosemolina4@gmail.com',
+    password: '1234',
   };
 
   constructor(
     private usuarioService: UsuarioService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private uiService: UiServiceService
   ) {}
 
   ngOnInit() {}
@@ -66,18 +68,22 @@ export class LoginPage implements OnInit {
     this.slides.lockSwipes(true);
   }
 
-  login(fLogin: NgForm) {
-    //validamos el login
+  async login(fLogin: NgForm) {
     if (fLogin.invalid) {
       return;
     }
+
     //enviamos data a la api de Usuario
-    this.usuarioService.login(this.loginUser.email, this.loginUser.password);
-    //
-    this.navCtrl.navigateRoot('/main/tabs/tab1', { animated: true });
-    //
-    console.log(fLogin.valid);
-    console.log(this.loginUser);
+    const valido = await this.usuarioService.login(
+      this.loginUser.email,
+      this.loginUser.password
+    );
+
+    if (valido) {
+      this.navCtrl.navigateRoot('/main/tabs/tab1', { animated: true });
+    } else {
+      this.uiService.alertaInformativa('Credenciales incorrectas.');
+    }
   }
 
   registro(fRegistro: NgForm) {
