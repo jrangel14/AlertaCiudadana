@@ -8,17 +8,20 @@ const URL = environment.url;
 @Injectable({
   providedIn: 'root',
 })
+
 export class UsuarioService {
-  // token: string = null;
+  // token: string = null;4
+
+
 
   constructor(private http: HttpClient, private storage: Storage) {}
 
   login(email: string, password: string) {
+    console.log(process.env);
     const data = { email, password };
 
     this.http.post(`${URL}/login`, data).subscribe((resp) => {
       console.log(resp);
-      
     });
   }
 }
