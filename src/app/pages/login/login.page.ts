@@ -78,7 +78,7 @@ export class LoginPage implements OnInit {
       this.loginUser.email,
       this.loginUser.password
     );
-
+      
     if (valido) {
       this.navCtrl.navigateRoot('/main/tabs/tab1', { animated: true });
     } else {
